@@ -5,6 +5,8 @@
 	$query = "SELECT * FROM notices";
 	$result = mysql_query($query, $con);
 	
+	mysql_close($con);
+	
 	$num_rows = mysql_num_rows($result);
 	
 	$response = array('success' => 0, 'num' => $num_rows);

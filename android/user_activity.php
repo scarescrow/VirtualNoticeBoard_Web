@@ -81,5 +81,7 @@
 		echo "Invalid Request";
 		
 	}	
+	
+	mysql_close($con);
 
 ?>
