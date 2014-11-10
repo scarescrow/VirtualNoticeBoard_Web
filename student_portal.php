@@ -27,24 +27,72 @@
 
 <link rel="stylesheet" href="css/student.css" type="text/css">
 
+<script type="text/javascript" src="js/jquery.js"></script>
+
+<script type="text/javascript">
+
+	var cls = "1";
+	
+	$(function() {
+	
+		$('.class' + cls).trigger('click');
+		$('.class' + cls).css('color', 'red');
+
+	});
+	
+	function get_notice(id) {
+		
+			$.ajax({
+				url: 'notice.php',
+				type: 'POST',
+				data: 'id=' + id,
+				
+				success: function(result) {
+				
+					var obj = $.parseJSON(result);
+					$('#notice').fadeOut(500);
+					$('#heading').fadeOut(500);
+					setTimeout(function() { 
+						$('#heading').text(obj.subject);
+						$('#notice').text(obj.message);
+					}, 500);
+					$('#notice').fadeIn(500);
+					$('#heading').fadeIn(500);
+					
+					$(".class" + id).css('color', 'red');
+					
+					if(cls != id) {
+					
+						$(".class" + cls).css('color', '#000');
+						cls = id;
+						
+					}
+				
+				}
+				
+			});
+			
+			return false;
+	}
+
+</script>
+
 </head>
 
 <body>
 
 <a href="logout.php" id="logout"><img src="images/logout.png" width="50%"></a>
 
-<h2> Student Portal </h2>
+<h2 id="main_heading" style="margin-top:50px;"> Student Portal </h2>
 
 <div id="main_body">
 
 <div id="all_notices">
 
-<h2>Notices</h2>
-
 <table id="notices">
 
 <tr align="center">
-	<th>S. No.</th>
+	<th>Notice</th>
 	<th>Subject</th>
 </tr>
 
@@ -56,7 +104,7 @@
 		
 		<tr align="center">
 			<td><?php echo ($i + 1)."."; ?></td>
-			<td><a href="notice.php?id=<?php echo mysql_result($result, $i, "SNo"); ?>"><?php echo mysql_result($result, $i, "Subject"); ?></a></td>
+			<td><a href="javascript:void(0);" class="class<?php echo mysql_result($result, $i, "SNo"); ?>" onclick="get_notice(<?php echo mysql_result($result, $i, "SNo"); ?>)"><?php echo mysql_result($result, $i, "Subject"); ?></a></td>
 		</tr>
 		
 		<?php
@@ -71,9 +119,9 @@
 
 <div class="notice_box">
 
-	<h2 id="heading">Title</h2>
+	<h2 id="heading"></h2>
 	
-	<p id="notice">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc</p> 
+	<p id="notice"></p> 
 
 </div>
 

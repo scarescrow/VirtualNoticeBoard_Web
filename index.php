@@ -24,6 +24,8 @@
 
 <body>
 
+<center><p id="main_heading">Virtual Notice Board</p></center>
+
 <div class = "login_box">
 
 <h2 id="heading">Student Login</h2>

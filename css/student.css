@@ -12,8 +12,8 @@ body {
 	box-shadow: 0px 0px 50px #888888;
 	border-radius: 10px;
 	display:block;
-	margin-left: 25%;
-	margin-top: 15%;
+	margin-left: 27%;
+	margin-top: 5%;
 	margin-right: 30%;
 	padding: 20px;
 
@@ -28,24 +28,27 @@ body {
 	display:block;
 	margin-left: 25%;
 	margin-top: 5%;
-	margin-right: 30%;
+	width: 600px;
+	height: 410px;
 	padding: 20px;
+	overflow-y: scroll;
 
 }
 
 #all_notices {
 
-	position:absolute;
-	top:11%;
-	margin_top: 15%;
 	background-color: #723823;
 	text-align: center;
 	border: solid 3px #aaa;
 	box-shadow: 0px 0px 50px #888888;
 	border-radius: 10px;
-	height: 70%;
+	height: 410px;
+	padding: 20px;
+	width: 275px;
 	overflow-y: scroll;
 	overflow-x: scroll;
+	float:left;
+	margin-right: 25px;
 
 }
 
@@ -90,5 +93,23 @@ body {
 #logout {
 
 	float:right;
+	margin-top: -50px;
+	margin-right: -40px;
+
+}
+
+#main_heading {
+
+	display:box;
+	color:#fff;
+	font-size: 26px;
+	text-align:center;
+	margin-top:80px;
+
+}
+
+#main_body {
+
+	margin-left: 10%;
 
 }
