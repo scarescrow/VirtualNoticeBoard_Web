@@ -11,7 +11,8 @@
 	
 	}
 	
-	$query = "SELECT SNo, Subject FROM notices";
+	$year = $_SESSION['year'];
+	$query = "SELECT SNo, Subject FROM notices WHERE Year LIKE '%$year%' ORDER BY Date DESC, Time DESC";
 	$result = mysql_query($query, $con);
 	$num_rows = mysql_num_rows($result);
 	
@@ -31,12 +32,12 @@
 
 <script type="text/javascript">
 
-	var cls = "1";
+	var cls = "0";
 	
 	$(function() {
 	
-		$('.class' + cls).trigger('click');
-		$('.class' + cls).css('color', 'red');
+		get_notice(<?php echo mysql_result($result, $i, "SNo"); ?>);
+		cls = <?php echo mysql_result($result, $i, "SNo"); ?>;
 
 	});
 	
@@ -53,8 +54,10 @@
 					$('#notice').fadeOut(500);
 					$('#heading').fadeOut(500);
 					setTimeout(function() { 
+						$('#date').text(obj.date + ", " + obj.time);
 						$('#heading').text(obj.subject);
 						$('#notice').text(obj.message);
+						$('#posted_by').text(obj.posted_by);
 					}, 500);
 					$('#notice').fadeIn(500);
 					$('#heading').fadeIn(500);
@@ -121,7 +124,11 @@
 
 	<h2 id="heading"></h2>
 	
+	<p><b>Date: </b> <span id="date"></span></p>
+	
 	<p id="notice"></p> 
+	
+	<p id="posted_by" style="text-align:right"></p>
 
 </div>
 

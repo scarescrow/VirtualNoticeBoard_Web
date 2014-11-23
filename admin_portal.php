@@ -11,11 +11,13 @@
 	
 	}
 	
-	$query = "SELECT SNo, Subject FROM notices";
+	$query = "SELECT SNo, Subject FROM notices ORDER BY Date DESC, Time DESC";
 	$result = mysql_query($query, $con);
 	$num_rows = mysql_num_rows($result);
 	
 	mysql_close($con);
+	
+	$final_id = 0;
 	
 ?>
 
@@ -23,18 +25,81 @@
 
 <head>
 
-<title>Student Portal</title>
+<title>Admin Portal</title>
+
+<link rel="stylesheet" href="css/student.css" type="text/css">
+<link type='text/css' href='css/contact.css' rel='stylesheet' media='screen' />
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type='text/javascript' src='js/jquery.simplemodal.js'></script>
+<script type='text/javascript' src='js/contact.js'></script>
+
+<script type="text/javascript">
+
+	var cls = "0";
+	
+	$(function() {
+			
+		get_notice(<?php echo mysql_result($result, $i, "SNo"); ?>);
+		cls = <?php echo mysql_result($result, $i, "SNo"); ?>
+		
+
+	});
+	
+	function get_notice(id) {
+		
+		if(cls == id)
+			return false;
+			
+		$(".class" + id).css('color', 'red');
+		$(".class" + cls).css('color', '#000');
+		cls = id;
+			
+		$.ajax({
+			url: 'notice.php',
+			type: 'POST',
+			data: 'id=' + id,
+			
+			success: function(result) {
+			
+				var obj = $.parseJSON(result);
+				
+				$('#notice').fadeOut(500);
+				$('#heading').fadeOut(500);
+				setTimeout(function() { 
+					$('#date').text(obj.date + ", " + obj.time);
+						$('#heading').text(obj.subject);
+						$('#notice').text(obj.message);
+						$('#posted_by').text(obj.posted_by);
+				}, 500);
+				$('#notice').fadeIn(500);
+				$('#heading').fadeIn(500);
+			
+			}
+			
+		});
+		
+		return false;
+	}
+
+</script>
 
 </head>
 
 <body>
 
-<h3>View Notices</h3>
+<a href="logout_admin.php" id="logout"><img src="images/logout.png" width="50%"></a>
 
-<table>
+<h3 id="main_heading" style="margin-top:50px;">Admin Portal</h3>
+
+<div id="main_body">
+
+<div id="all_notices">
+
+<table id="notices">
 
 <tr align="center">
-	<th>S. No.</th>
+	<th>Notice.</th>
 	<th>Subject</th>
 </tr>
 
@@ -42,11 +107,13 @@
 	
 	for($i = 0; $i < $num_rows; $i++) {
 	
+		$final_id = mysql_result($result, $i, "SNo");
+	
 		?>
 		
 		<tr align="center">
-			<td><?php echo $i + 1; ?></td>
-			<td><a href="notice.php?id=<?php echo mysql_result($result, $i, "SNo"); ?>"><?php echo mysql_result($result, $i, "Subject"); ?></a></td>
+			<td><?php echo ($i + 1)."."; ?></td>
+			<td><a href="javascript:void(0);" class="class<?php echo mysql_result($result, $i, "SNo"); ?>" onclick="get_notice(<?php echo mysql_result($result, $i, "SNo"); ?>)"><?php echo mysql_result($result, $i, "Subject"); ?></a></td>
 		</tr>
 		
 		<?php
@@ -57,30 +124,23 @@
 
 </table>
 
-<br><br>
+</div>
 
-<h3>Post New Notice</h3>
+<div class="notice_box">
 
-<form action="submit_notice.php" method="post">
-
-	Subject: <input type="text" name="subject"> <br><br>
-	Message: <textarea name="message" rows = "7" cols="15"></textarea><br><br>
-	Year: <select name="year">
-		<option value="1">1</option>
-		<option value="2">2</option>
-		<option value="3">3</option>
-		<option value="4">4</option>
-		<option value="1234">All</option>
-	</select>
-	<br><br>
-	<input type="submit" value="Submit">
+	<h2 id="heading"></h2>
 	
-</form>
+	<p><b>Date: </b> <span id="date"></span></p>
+	
+	<p id="notice"></p> 
+	
+	<p id="posted_by" style="text-align:right"></p>
 
-<br><br>
+</div>
 
-<a href="logout.php">Logout</a>
+</div>
 
+<a href='#' class='contact' id="add"><img src="images/add_new.png"></a>
 </body>
 
 </html>

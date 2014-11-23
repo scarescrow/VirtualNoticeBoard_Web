@@ -16,6 +16,7 @@
 	if($num_rows == 1) {
 	
 		$_SESSION['email'] = $email;
+		$_SESSION['year'] = mysql_result($result, 0, "Year");
 		
 		header('location:student_portal.php');
 	

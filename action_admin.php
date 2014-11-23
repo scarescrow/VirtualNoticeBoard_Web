@@ -15,7 +15,9 @@
 	
 	if($num_rows == 1) {
 	
-		$_SESSION['email'] = $email;
+		
+		$_SESSION['email'] = mysql_result($result, 0, "Name");
+		$_SESSION['role'] = "admin";
 		
 		header('location:admin_portal.php');
 	
