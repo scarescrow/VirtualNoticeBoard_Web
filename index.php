@@ -2,7 +2,7 @@
 
 	session_start();
 	
-	if(isset($_SESSION['email'])) {
+	if(isset($_SESSION['email']) && $_SESSION['role'] == "student") {
 		
 		header('location: student_portal.php');
 		die();
@@ -18,6 +18,7 @@
 <title>Virtual Notice Board</title>
 
 <link rel="stylesheet" type="text/css" href="css/student.css">
+<link rel="shortcut icon" href="images/favicon.ico" />
 <link href="//fonts.googleapis.com/css?family=Convergence&subset=latin" rel="stylesheet" type="text/css">
 
 </head>

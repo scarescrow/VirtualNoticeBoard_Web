@@ -24,7 +24,7 @@
 	$time = date('h:i:s', time());
 	
 	$query = "INSERT INTO notices (Subject, Message, Posted_By, Year, Date, Time) VALUES ('$subject', '$message', '$posted_by', '$year', '$date', '$time')";
-	mysql_query($query, $con);
+	mysql_query($query, $con) or die(mysql_error());
 	
 	if($year == "1234")
 		
@@ -44,8 +44,8 @@
 	
 	}
 	
-	$pushStatus = "New notice posted!";	
-	$pushMessage = "New notice!";	
+	$pushStatus = $subject;	
+	$pushMessage = $subject;	
 	
 	$message = array("m" => $pushMessage);	
 	$pushStatus = sendPushNotificationToGCM($gcm_ids, $message);
@@ -53,40 +53,47 @@
 	
 	mysql_close($con);
 	
+	if ($result) {
+		echo "Your notice has been posted successfully.".mysql_error();
+	}
+	else {
+		echo "Unfortunately, your notice could not be posted.";
+	}
+	
 	function sendPushNotificationToGCM($registatoin_ids, $message) {
 		
 		//Google cloud messaging GCM-API url
-        $url = 'https://android.googleapis.com/gcm/send';
-        $fields = array(
-            'registration_ids' => $registatoin_ids,
-            'data' => $message,
-        );
+		$url = 'https://android.googleapis.com/gcm/send';
+		$fields = array(
+			'registration_ids' => $registatoin_ids,
+			'data' => $message,
+		);
 		
 		// Google Cloud Messaging GCM API Key
 		define("GOOGLE_API_KEY", "AIzaSyBKkSsXzjRXOmJA6SmjZEvQh5cJ-aoQYg0"); 		
-        
+		
 		$headers = array(
-            'Authorization: key=' . GOOGLE_API_KEY,
-            'Content-Type: application/json'
-        );
-        
+			'Authorization: key=' . GOOGLE_API_KEY,
+			'Content-Type: application/json'
+		);
+		
 		$ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);	
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
-        
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+		
 		$result = curl_exec($ch);				
-        
+		
 		if ($result === FALSE) {
-            die('Curl failed: ' . curl_error($ch));
-        }
-        
+			die('Curl failed: ' . curl_error($ch));
+		}
+		
 		curl_close($ch);
-        return $result;
-    }
+		return $result;
+	}
 
 ?>

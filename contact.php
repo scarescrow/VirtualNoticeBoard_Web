@@ -72,7 +72,7 @@ else if ($action == "send") {
 	}
 	
 	$pushStatus = $title;	
-	$pushMessage = "New notice!";	
+	$pushMessage = $title;	
 	
 	$message = array("m" => $pushMessage);	
 	$pushStatus = sendPushNotificationToGCM($gcm_ids, $message);

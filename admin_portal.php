@@ -4,15 +4,16 @@
 	
 	include "connection.php";
 	
-	if(!isset($_SESSION['email'])) {
+	if(!isset($_SESSION['email']) || $_SESSION['role'] != "admin") {
 	
-		header('location:index.html');
+		header('location:admin.php');
 		die();
 	
 	}
 	
 	$query = "SELECT SNo, Subject FROM notices ORDER BY Date DESC, Time DESC";
 	$result = mysql_query($query, $con);
+	$i = 0;
 	$num_rows = mysql_num_rows($result);
 	
 	mysql_close($con);
@@ -29,6 +30,7 @@
 
 <link rel="stylesheet" href="css/student.css" type="text/css">
 <link type='text/css' href='css/contact.css' rel='stylesheet' media='screen' />
+<link rel="shortcut icon" href="images/favicon.ico" />
 
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type='text/javascript' src='js/jquery.simplemodal.js'></script>
@@ -64,16 +66,18 @@
 			
 				var obj = $.parseJSON(result);
 				
-				$('#notice').fadeOut(500);
-				$('#heading').fadeOut(500);
+				$('#notice').fadeOut(200);
+				$('#heading').fadeOut(200);
+				$('#date').fadeOut(200);
 				setTimeout(function() { 
-					$('#date').text(obj.date + ", " + obj.time);
+						$('#date').text(obj.date + ", " + obj.time);
 						$('#heading').text(obj.subject);
-						$('#notice').text(obj.message);
+						$('#notice').html(obj.message);
 						$('#posted_by').text(obj.posted_by);
-				}, 500);
-				$('#notice').fadeIn(500);
-				$('#heading').fadeIn(500);
+				}, 200);
+				$('#notice').fadeIn(200);
+				$('#heading').fadeIn(200);
+				$('#date').fadeIn(200);
 			
 			}
 			

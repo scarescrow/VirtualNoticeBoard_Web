@@ -2,7 +2,7 @@
 
 	session_start();
 	
-	if(isset($_SESSION['email'])) {
+	if(isset($_SESSION['email']) && $_SESSION['role'] == "admin") {
 	
 		header('location: admin_portal.php');
 	
@@ -18,6 +18,7 @@
 
 <link rel="stylesheet" type="text/css" href="css/student.css">
 <link href="//fonts.googleapis.com/css?family=Convergence&subset=latin" rel="stylesheet" type="text/css">
+<link rel="shortcut icon" href="images/favicon.ico" />
 
 </head>
 

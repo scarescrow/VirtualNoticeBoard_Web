@@ -4,7 +4,7 @@
 	
 	$year = $_POST['year'];
 	
-	$query = "SELECT * FROM notices WHERE Year LIKE '%$year%' ORDER BY Date, Time";
+	$query = "SELECT * FROM notices WHERE Year LIKE '%$year%' ORDER BY Date DESC, Time DESC";
 	$result = mysql_query($query, $con);
 	
 	mysql_close($con);

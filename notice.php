@@ -17,7 +17,7 @@
 	$result = mysql_query($query, $con);
 	
 	$json['subject'] = mysql_result($result, 0, "Subject");
-	$json['message'] = mysql_result($result, 0, "Message");
+	$json['message'] = nl2br(mysql_result($result, 0, "Message"), false);
 	$json['date'] = mysql_result($result, 0, "Date");
 	$json['time'] = mysql_result($result, 0, "Time");
 	$json['posted_by'] = mysql_result($result, 0, "Posted_By");

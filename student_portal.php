@@ -4,9 +4,9 @@
 	
 	include "connection.php";
 	
-	if(!isset($_SESSION['email'])) {
+	if(!isset($_SESSION['email'])  || $_SESSION['role'] != 'student') {
 	
-		header('location:index.html');
+		header('location:index.php');
 		die();
 	
 	}
@@ -15,6 +15,7 @@
 	$query = "SELECT SNo, Subject FROM notices WHERE Year LIKE '%$year%' ORDER BY Date DESC, Time DESC";
 	$result = mysql_query($query, $con);
 	$num_rows = mysql_num_rows($result);
+	$i = 0;
 	
 	mysql_close($con);
 	
@@ -27,6 +28,7 @@
 <title>Student Portal</title>
 
 <link rel="stylesheet" href="css/student.css" type="text/css">
+<link rel="shortcut icon" href="images/favicon.ico" />
 
 <script type="text/javascript" src="js/jquery.js"></script>
 
@@ -51,16 +53,19 @@
 				success: function(result) {
 				
 					var obj = $.parseJSON(result);
-					$('#notice').fadeOut(500);
-					$('#heading').fadeOut(500);
+					
+					$('#notice').fadeOut(200);
+					$('#heading').fadeOut(200);
+					$('#date').fadeOut(200);
 					setTimeout(function() { 
 						$('#date').text(obj.date + ", " + obj.time);
 						$('#heading').text(obj.subject);
-						$('#notice').text(obj.message);
+						$('#notice').html(obj.message);
 						$('#posted_by').text(obj.posted_by);
-					}, 500);
-					$('#notice').fadeIn(500);
-					$('#heading').fadeIn(500);
+					}, 200);
+					$('#notice').fadeIn(200);
+					$('#heading').fadeIn(200);
+					$('#date').fadeIn(200);
 					
 					$(".class" + id).css('color', 'red');
 					

@@ -17,6 +17,7 @@
 	
 		$_SESSION['email'] = $email;
 		$_SESSION['year'] = mysql_result($result, 0, "Year");
+		$_SESSION['role'] = "student";
 		
 		header('location:student_portal.php');
 	
