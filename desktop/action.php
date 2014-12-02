@@ -21,7 +21,7 @@
 	date_default_timezone_set('Asia/Calcutta');
 	
 	$date = date('Y-m-d', time());
-	$time = date('h:i:s', time());
+	$time = date('H:i:s', time());
 	
 	$query = "INSERT INTO notices (Subject, Message, Posted_By, Year, Date, Time) VALUES ('$subject', '$message', '$posted_by', '$year', '$date', '$time')";
 	mysql_query($query, $con) or die(mysql_error());
@@ -47,7 +47,11 @@
 	$pushStatus = $subject;	
 	$pushMessage = $subject;	
 	
-	$message = array("m" => $pushMessage);	
+	$query = "SELECT SNo FROM notices WHERE Subject LIKE '%$subject%'";
+	$result = mysql_query($query);
+	$id = mysql_result($result, 0, "SNo");
+	
+	$message = array("id" => $id, "subject" => $pushMessage, "message" => $message, "admin" => $posted_by, "date" => $date, "time" => $time);
 	$pushStatus = sendPushNotificationToGCM($gcm_ids, $message);
 	
 	

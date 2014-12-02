@@ -74,7 +74,11 @@ else if ($action == "send") {
 	$pushStatus = $title;	
 	$pushMessage = $title;	
 	
-	$message = array("m" => $pushMessage);	
+	$query = "SELECT SNo FROM notices WHERE Subject LIKE '%$title%'";
+	$result = mysql_query($query);
+	$id = mysql_result($result, 0, "SNo");
+	
+	$message = array("id" => $id,"subject" => $pushMessage, "message" => $message, "admin" => $admin, "date" => $date, "time" => $time);	
 	$pushStatus = sendPushNotificationToGCM($gcm_ids, $message);
 	
 	mysql_close($con);
